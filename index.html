@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Julia R</title>
+    <style>
+        /* Estilos para centralizar o conteúdo na página */
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100vh;
+            margin: 0;
+            font-family: sans-serif;
+            background-color: #f0f2f5;
+        }
+
+        /* Animação para piscar e mudar de cor */
+        .blinking-text {
+            font-size: 3rem;
+            animation:
+                color-change 3s linear infinite,
+                blink 1s step-end infinite;
+        }
+
+        @keyframes color-change {
+            0% { color: red; }
+            20% { color: orange; }
+            40% { color: yellow; }
+            60% { color: green; }
+            80% { color: blue; }
+            100% { color: purple; }
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        /* Estilo para o botão do WhatsApp */
+        .whatsapp-button {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+            background-color: #25D366; /* Cor verde do WhatsApp */
+            border-radius: 30px;
+            text-decoration: none;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .whatsapp-button:hover {
+            background-color: #128C7E; /* Cor mais escura ao passar o mouse */
+        }
+    </style>
+</head>
+<body>
+    <h1 class="blinking-text">Julia Me Responda</h1>
+
+    <!-- O link do botão vai para o WhatsApp. Lembre-se de trocar 'SEU_NUMERO_AQUI' -->
+    <a href="https://wa.me/5579998792211" target="_blank" class="whatsapp-button">
+        Responder
+    </a>
+    
+</body>
+</html>
