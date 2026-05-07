@@ -113,30 +113,72 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Pede para balançar o celular e escuta o evento
-    btnGenerate.addEventListener('click', () => {
-        btnGenerate.textContent = 'Balance o celular!';
+    // Pede para assoprar o microfone e escuta o evento de áudio
+    btnGenerate.addEventListener('click', async () => {
+        btnGenerate.textContent = 'Assopre o pózinho mágico (no microfone)!';
         btnGenerate.disabled = true;
         btnFallback.classList.remove('hidden');
 
-        const shakeThreshold = 20; // Sensibilidade do shake
-        function handleShake(event) {
-            const acceleration = event.acceleration;
-            if (Math.abs(acceleration.x) > shakeThreshold || Math.abs(acceleration.y) > shakeThreshold) {
-                // Shake detectado! Remove o listener para não disparar de novo.
-                window.removeEventListener('devicemotion', handleShake);
-                startFinalSequence();
-            }
-        }
+        let audioContext;
+        let stream;
+        let animationId;
 
-        // Começa a "ouvir" o movimento do celular
-        window.addEventListener('devicemotion', handleShake);
+        // Função para encerrar o uso do microfone
+        const stopListening = () => {
+            if (animationId) cancelAnimationFrame(animationId);
+            if (stream) stream.getTracks().forEach(track => track.stop());
+            if (audioContext && audioContext.state !== 'closed') audioContext.close();
+        };
 
-        // Fallback caso o balanço não funcione
-        btnFallback.addEventListener('click', () => {
-            window.removeEventListener('devicemotion', handleShake);
+        // Função para concluir a detecção ou fallback
+        const triggerFinal = () => {
+            stopListening();
             startFinalSequence();
+        };
+
+        // Fallback caso o microfone não funcione, não dê permissão ou a pessoa prefira clicar
+        btnFallback.addEventListener('click', () => {
+            triggerFinal();
         }, { once: true });
+
+        try {
+            // Tenta obter permissão de áudio do usuário
+            stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const analyser = audioContext.createAnalyser();
+            const microphone = audioContext.createMediaStreamSource(stream);
+            
+            analyser.fftSize = 256;
+            microphone.connect(analyser);
+            
+            const dataArray = new Uint8Array(analyser.frequencyBinCount);
+            
+            // Função que checa o volume continuamente
+            const checkVolume = () => {
+                analyser.getByteFrequencyData(dataArray);
+                let sum = 0;
+                for (let i = 0; i < dataArray.length; i++) {
+                    sum += dataArray[i];
+                }
+                const average = sum / dataArray.length;
+                
+                // Sensibilidade do sopro. Média costuma ficar abaixo de 20-30 no silêncio.
+                // Quando a pessoa assopra o microfone do celular, passa fácil de 80.
+                const blowThreshold = 80; 
+                if (average > blowThreshold) {
+                    triggerFinal();
+                    return; // Para a verificação
+                }
+                
+                animationId = requestAnimationFrame(checkVolume);
+            };
+            
+            checkVolume();
+            
+        } catch (err) {
+            console.warn("Acesso ao microfone não permitido ou não suportado no momento.", err);
+            btnGenerate.textContent = 'Sem acesso ao microfone. Use o botão abaixo!';
+        }
     });
 
     // Lógica do botão "Não" fugindo pela tela
