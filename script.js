@@ -10,6 +10,9 @@ function dispararBrilho() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Alerta inicial pedindo para aceitar as permissões
+    alert("Por favor, quando o site pedir, aceite as permissões para que o joguinho funcione perfeitamente! ✨");
+
     const btnStart = document.getElementById('btn-start');
     const screenStart = document.getElementById('screen-start');
     const screenGame = document.getElementById('screen-game');
@@ -63,15 +66,24 @@ document.addEventListener('DOMContentLoaded', () => {
             surpriseMusic.currentTime = 116; // Inicia a música em 1:56 (116 segundos)
             surpriseMusic.play();
             
-            // 8 segundos depois, mostra o pop-up surpresa "Você gostou?"
+            // 5 segundos depois, mostra o pop-up surpresa "Você gostou?"
             setTimeout(() => {
                 popupGostou.classList.remove('hidden');
-            }, 8000);
+            }, 5000);
         }, 10000); // 10 segundos de suspense no total
     }
 
     // Oculta a tela inicial e mostra a tela do jogo ao clicar no botão
-    btnStart.addEventListener('click', () => {
+    btnStart.addEventListener('click', async () => {
+        // Pede a permissão do microfone logo de início para uma melhor experiência
+        try {
+            const tempStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+            // Fecha o microfone temporário, pois só queríamos garantir a permissão antecipada do usuário
+            tempStream.getTracks().forEach(track => track.stop());
+        } catch (err) {
+            console.warn("Permissão de microfone negada ou ignorada no início.", err);
+        }
+
         screenStart.classList.add('hidden');
         screenGame.classList.remove('hidden');
         dispararBrilho();
