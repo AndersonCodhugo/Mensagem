@@ -4,69 +4,102 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Julia R</title>
-    <style>
-        /* Estilos para centralizar o conteúdo na página */
-        body {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            height: 100vh;
-            margin: 0;
-            font-family: sans-serif;
-            background-color: #f0f2f5;
-        }
-
-        /* Animação para piscar e mudar de cor */
-        .blinking-text {
-            font-size: 3rem;
-            animation:
-                color-change 3s linear infinite,
-                blink 1s step-end infinite;
-        }
-
-        @keyframes color-change {
-            0% { color: red; }
-            20% { color: orange; }
-            40% { color: yellow; }
-            60% { color: green; }
-            80% { color: blue; }
-            100% { color: purple; }
-        }
-
-        @keyframes blink {
-            50% {
-                opacity: 0;
-            }
-        }
-
-        /* Estilo para o botão do WhatsApp */
-        .whatsapp-button {
-            display: inline-block;
-            padding: 15px 30px;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #fff;
-            background-color: #25D366; /* Cor verde do WhatsApp */
-            border-radius: 30px;
-            text-decoration: none;
-            margin-top: 20px;
-            transition: background-color 0.3s ease;
-        }
-
-        .whatsapp-button:hover {
-            background-color: #128C7E; /* Cor mais escura ao passar o mouse */
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </head>
 <body>
-    <h1 class="blinking-text">Julia Me Responda</h1>
-
-    <!-- O link do botão vai para o WhatsApp. Lembre-se de trocar 'SEU_NUMERO_AQUI' -->
-    <a href="https://wa.me/5579998792211" target="_blank" class="whatsapp-button">
-        Responder
-    </a>
     
+    <div class="container" id="screen-start">
+        <h1>Bem-vinda, Julia!</h1>
+        <button type="button" class="btn-start" id="btn-start">Começar</button>
+    </div>
+
+    <div class="container hidden" id="screen-game">
+        <h2>Monte sua princesa</h2>
+        
+        <div class="game-area">
+            <div class="silhouette-container">
+                <!-- O GIF da silhueta ficará aqui e permanecerá nas próximas fases -->
+                <img src="assets/princesa.gif" alt="Silhueta da Princesa" class="princess-silhouette">
+            </div>
+            
+            <div class="options-container">
+                <!-- Fase 1: Calçados -->
+                <div id="step-shoes">
+                    <h3>Escolha seu calçado</h3>
+                    <div class="options-grid">
+                        <img src="assets/tenis.jpeg" alt="Opção 1" class="option-item shoe-option">
+                        <img src="assets/salto.jpeg" alt="Opção 2" class="option-item shoe-option">
+                        <img src="assets/sandalia.jpeg" alt="Opção 3" class="option-item shoe-option">
+                    </div>
+                </div>
+
+                <!-- Fase 2: Roupas (Oculta inicialmente) -->
+                <div id="step-clothes" class="hidden">
+                    <h3>Escolha sua roupa</h3>
+                    <div class="options-grid">
+                        <img src="assets/casual.jpeg" alt="Roupa 1" class="option-item clothes-option">
+                        <img src="assets/shortbrasil.jpeg" alt="Roupa 2" class="option-item clothes-option">
+                        <img src="assets/vestido.jpeg" alt="Roupa 3" class="option-item clothes-option">
+                    </div>
+                </div>
+
+                <!-- Fase 3: Maquiagem (Oculta inicialmente) -->
+                <div id="step-makeup" class="hidden">
+                    <h3>Escolha sua maquiagem</h3>
+                    <div class="options-grid">
+                        <img src="assets/boamaquiagem.jpeg" alt="Maquiagem 1" class="option-item makeup-option">
+                        <img src="assets/muitamake.jpeg" alt="Maquiagem 2" class="option-item makeup-option">
+                        <img src="assets/maquiagem.jpeg" alt="Maquiagem 3" class="option-item makeup-option">
+                    </div>
+                </div>
+
+                <!-- Fase 4: Cabelo (Oculta inicialmente) -->
+                <div id="step-hair" class="hidden">
+                    <h3>Escolha seu cabelo</h3>
+                    <div class="options-grid">
+                        <img src="assets/cabeloarrumado.jpeg" alt="Cabelo 1" class="option-item hair-option">
+                        <img src="assets/cabelomuitoarrumado.jpeg" alt="Cabelo 2" class="option-item hair-option">
+                        <img src="assets/cabeloliso.jpeg" alt="Cabelo 3" class="option-item hair-option">
+                    </div>
+                </div>
+
+                <!-- Fase Final: Gerar -->
+                <div id="step-generate" class="hidden">
+                    <button type="button" id="btn-generate">Gerar Princesa</button>
+                    <button type="button" id="btn-fallback" class="hidden discreet-btn">Clique aqui se não funcionar o balanço do celular</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tela de Carregamento / Erro -->
+    <div class="container hidden" id="screen-error">
+        <div class="terminal">
+            <p id="error-msg-1" class="hidden">> Processando combinações genéticas...</p>
+            <p id="error-msg-2" class="hidden error-text">> FATAL ERROR: Princesa não encontrada.</p>
+            <p id="error-msg-3" class="hidden error-text">> ERRO DE SISTEMA: Não foi possível gerar essa princesa.</p>
+            <p id="error-msg-4" class="hidden">> Recalculando matriz de dados...</p>
+            <p id="error-msg-5" class="hidden success-text">> AVISO: A combinação criou algo melhor!</p>
+        </div>
+    </div>
+
+    <!-- Tela Surpresa -->
+    <div class="container hidden" id="screen-surprise">
+        <video src="assets/AQMsZZQ9a4BjPkijLrVwCpt6G9JOX6EM1TrVqcInomqmq-M6PVb-TBH2M1iv3sRu26t3Vfl_biywqgkThbv2VjQwXWNboxir61i0imw.mp4" alt="Imagem Surpresa" class="surprise-image">
+        <audio id="surprise-music" src="assets/1 - Amante (Acústico).mp3"></audio>
+    </div>
+
+    <!-- Pop-up de Avaliação -->
+    <div class="popup-overlay hidden" id="popup-gostou">
+        <div class="popup-content">
+            <h2>Você gostou?</h2>
+            <div class="popup-buttons">
+                <button type="button" id="btn-yes" class="popup-btn">Sim</button>
+                <button type="button" id="btn-no" class="popup-btn">Não</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script> 
 </body>
 </html>

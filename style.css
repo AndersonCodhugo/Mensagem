@@ -1,0 +1,333 @@
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #F5617A;
+    padding: 0 20px;
+    box-sizing: border-box;
+    color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
+    text-align: center;
+}
+
+.hidden {
+    display: none !important;
+}
+
+h1 {
+    font-size: 3.5rem;
+    margin-bottom: 2rem;
+    text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.4);
+}
+
+.btn-start {
+    background-color: #ff2a85; /* Rosa vibrante */
+    color: white;
+    border: 3px solid #ffffff;
+    padding: 15px 50px;
+    font-size: 1.5rem;
+    font-weight: 900;
+    border-radius: 50px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 15px #ff2a85;
+    /* A animação 'pulse' dura 2s, é infinita e tem um ritmo suave (ease-in-out) */
+    animation: pulse 2s infinite ease-in-out; 
+    transition: background-color 0.3s;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 15px #ff2a85; }
+    50% { transform: scale(1.1); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 30px #ff2a85, 0 0 15px #ff2a85 inset; }
+    100% { transform: scale(1); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 15px #ff2a85; }
+}
+
+/* Estilos do Minigame */
+#screen-game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+}
+
+#screen-game h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.game-area {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.silhouette-container {
+    width: 40%;
+    display: flex;
+    justify-content: center;
+}
+
+.princess-silhouette {
+    width: 100%;
+    max-width: 250px;
+    height: auto;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5)) blur(5px);
+    transition: filter 0.5s ease;
+    animation: pulsarMagia 2s infinite alternate;
+}
+
+/* Animação que faz o brilho "respirar" */
+@keyframes pulsarMagia {
+    from {
+        filter: drop-shadow(0 0 5px #F5617A) blur(5px);
+    }
+    to {
+        filter: drop-shadow(0 0 20px #FFD700) blur(7px);
+    }
+}
+
+.options-container {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.options-container h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #ffffff;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
+}
+
+.options-grid {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.option-item {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 3px solid #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.option-item:hover {
+    border-color: #ff2a85;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    transform: scale(1.1);
+}
+
+/* Responsividade para telas de celulares (ex: iPhones) */
+@media (max-width: 600px) {
+    h1 {
+        font-size: 2.2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-start {
+        font-size: 1.2rem;
+        padding: 12px 30px;
+        width: 100%;
+        max-width: 280px;
+    }
+
+    #screen-game h2 {
+        font-size: 1.8rem;
+    }
+
+    .game-area {
+        flex-direction: column;
+    }
+
+    .silhouette-container {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    
+    .princess-silhouette {
+        max-width: 150px;
+    }
+
+    .options-container {
+        width: 100%;
+    }
+
+    .options-grid {
+        gap: 10px;
+    }
+
+    .option-item {
+        width: 70px;
+        height: 70px;
+    }
+}
+
+/* Botão para gerar a princesa */
+#btn-generate {
+    background-color: #ffffff;
+    color: #ff2a85;
+    border: 3px solid #ff2a85;
+    padding: 15px 50px;
+    font-size: 1.5rem;
+    font-weight: 900;
+    border-radius: 50px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s;
+    margin-top: 40px;
+}
+
+#btn-generate:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+#btn-generate:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.discreet-btn {
+    background: none;
+    border: none;
+    color: #ffffff;
+    text-decoration: underline;
+    font-size: 0.9rem;
+    margin-top: 20px;
+    cursor: pointer;
+    opacity: 0.8;
+    display: block;
+    font-family: inherit;
+}
+
+/* Estilos da Tela de Erro / Terminal */
+#screen-error {
+    background-color: #0c0c0c;
+    color: #00ff00;
+    font-family: 'Courier New', Courier, monospace;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.terminal {
+    text-align: left;
+    width: 90%;
+    max-width: 600px;
+}
+
+.terminal p {
+    font-size: 1.2rem;
+    margin: 10px 0;
+}
+
+.error-text {
+    color: #ff3333;
+    font-weight: bold;
+}
+
+.success-text {
+    color: #ffff00;
+    font-weight: bold;
+    animation: blink 0.5s infinite alternate;
+}
+
+@keyframes blink {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+/* Estilos da Tela Surpresa */
+#screen-surprise {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    z-index: 10;
+}
+
+.surprise-image {
+    width: 100%;
+    max-width: 400px;
+    border: 5px solid #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px #ff2a85;
+    margin-top: 20px;
+    animation: pulse 2s infinite ease-in-out; 
+}
+
+/* Estilos do Pop-up de Avaliação */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+}
+
+.popup-content {
+    background-color: #F5617A;
+    padding: 40px;
+    border-radius: 20px;
+    border: 4px solid #ffffff;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+}
+
+.popup-buttons {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    min-height: 60px; /* Evita que o espaço encolha quando o botão fugir */
+}
+
+.popup-btn {
+    background-color: #ffffff;
+    color: #ff2a85;
+    border: 3px solid #ff2a85;
+    padding: 12px 35px;
+    font-size: 1.5rem;
+    font-weight: 900;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.popup-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+}
